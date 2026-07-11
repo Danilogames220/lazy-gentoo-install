@@ -1,0 +1,5 @@
+# Default configuration by Lazy Gentoo Install(2026)
+# Github repo: https://github.com/Danilogames220/lazy-gentoo-install
+
+127.0.0.1     %s.homenetwork %s localhost
+::1           %s.homenetwork %s localhost

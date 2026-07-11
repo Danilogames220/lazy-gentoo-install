@@ -1,0 +1,9 @@
+# Default configuration by Lazy Gentoo Install(2026)
+# Github repo: https://github.com/Danilogames220/lazy-gentoo-install
+
+/dev/%s1   /efi         vfat    umask=0077,tz=UTC     0 2
+/dev/%s2   none         swap    sw                   0 0
+/dev/%s3   /            ext4    defaults,noatime              0 1
+
+/dev/cdrom  /mnt/cdrom   auto    noauto,user          0 0
+
