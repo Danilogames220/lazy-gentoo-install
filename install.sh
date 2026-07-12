@@ -124,7 +124,7 @@ mkdir --parents /mnt/gentoo/efi
 cd /mnt/gentoo
 
 wget "$stage_file_link"
-tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gento
+tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gentoo
 
 # overwrite the default make.conf with the one in here
 cp -fr "$SCRIPT_DIR"/make.conf /mnt/gentoo/etc/portage/
