@@ -10,11 +10,15 @@ function multi_pipe() {
 #END
 #)
 
-cat <<END | mp2 iwctl
-three
-three
-END
+#cat <<END | mp2 iwctl
+#three
+#three
+#END
 
+printf "a
+b
+c
+" | multi_pipe iwctl
 #multi_pipe iwctl "$aaa"
 
 
