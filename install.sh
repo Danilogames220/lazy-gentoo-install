@@ -21,12 +21,14 @@ echo "$root_password" > "PASSWORDS.txt"
 echo "$user_password" >> "PASSWORDS.txt"
 
 # ----- NETWORK ----- #
+# https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Networking
 # TODO
 
 # ----- DISK PARTITIONING ----- #
-# "$disk_name"1: EFI
-# "$disk_name"2: swap (half of $ram_gb)
-# "$disk_name"1: / (ext4)
+# https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Disks
+# "$disk"1: EFI
+# "$disk"2: swap (half of $ram_gb)
+# "$disk"1: / (ext4)
 
 function multi_pipe() {
 	while read -r a; do
@@ -96,3 +98,5 @@ swapon "/dev/$disk"2
 mkdir --parents /mnt/gentoo
 sudo mount "/dev/$disk"3 /mnt/gentoo
 mkdir --parents /mnt/gentoo/efi
+
+# ----- STAGE FILE ----- #
