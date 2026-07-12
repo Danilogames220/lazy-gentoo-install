@@ -37,10 +37,15 @@ if [[ -z $root_password || $root_password = "" ]]; then
 	echo "ERROR: Root password is empty."
 	exit 1
 fi
-echo "$root_password" > "PASSWORDS.txt"
-echo "$user_password" >> "PASSWORDS.txt"
+if [[ "$user_password" = "" ]]; then
+	user_password="$root_password"
+fi
+# echo "$root_password" > "PASSWORDS.txt"
+# echo "$user_password" >> "PASSWORDS.txt"
 
-
+### common variables / functions
+# dir where the script is running
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 function multi_pipe() {
 	while read -r a; do
 		printf "%s" "$a" | $1
@@ -121,4 +126,7 @@ cd /mnt/gentoo
 wget "$stage_file_link"
 tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gento
 
+# overwrite the default make.conf with the one in here
+cp -fr "$SCRIPT_DIR"/make.conf /mnt/gentoo/etc/portage/
 
+# ----- INSTALLING THE BASE SYSTEM ----- #
