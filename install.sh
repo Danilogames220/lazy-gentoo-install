@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 # ----- SETTINGS ----- #
 # initial user, will have root permisions
 user_name="assuero" 
@@ -18,6 +19,10 @@ host_name="Gentoo"
 swap_gb=4
 
 core_count=8
+
+# the locale that you want to use in the system
+default_locale="pt_BR.UTF-8"
+#default_locale="en_US.UTF-8"
 
 # remove this line after every variable is set up to your installation
 config_done=0
@@ -128,5 +133,24 @@ tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gentoo
 
 # overwrite the default make.conf with the one in here
 cp -fr "$SCRIPT_DIR"/make.conf /mnt/gentoo/etc/portage/
+# also overwrite this for locale config
+cp -fr "$SCRIPT_DIR"/locale.gen /mnt/gentoo/etc/
 
 # ----- INSTALLING THE BASE SYSTEM ----- #
+# https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Base
+
+cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
+# chrooting into the system
+sudo arch-chroot /mnt/gentoo
+export PS1="(chroot) ${PS1}"
+
+mount /dev/sda1 /efi
+
+emerge-webrsync
+emerge --sync
+
+# locale
+locale-gen
+eselect locale set $(eselect locale list | grep -m1 "$default_locale" | grep -oP '\[\K\d+(?=\])')
+
+env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
