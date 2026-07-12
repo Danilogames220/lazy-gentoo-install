@@ -7,6 +7,7 @@ This script was made based on the official Gentoo Linux AMD64 handbook, this was
 ## How to use:
 > [!WARNING]
 > Do not use this script if you don't already know how to install gentoo or if this is your first time doing so, please verify each part of the script manualy before using it and caution if your using this outside of a virtual machine
+
 > [!NOTE]
 > This script assumes that the disk is empty and the time is set correctly
 - How to syncronise the time in the live ISO: https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage#Downloading_the_stage_file
