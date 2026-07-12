@@ -4,7 +4,8 @@ user_name="assuero" # initial user, will have root permisions
 user_password="" # if empty, this will be the same as root password
 
 host_name="Gentoo"
-disk_name="vda" # run lsblk to check for your disk
+# the disk where gentoo will be instaled
+disk="vda" # run lsblk to check for your disk
 
 ram_gb=8
 ssd_size_gb=32
