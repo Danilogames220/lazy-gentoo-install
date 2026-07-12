@@ -9,11 +9,12 @@ disk="vda" # run lsblk in the live install to check for your disk
 
 # Link of the stage file that will be used in the installation
 # you can find it here: https://www.gentoo.org/downloads/mirrors/
-stage_file_link=""
+# TODO leave this empty
+stage_file_link="https://gentoo.c3sl.ufpr.br/releases/amd64/autobuilds/20260510T170106Z/stage3-amd64-desktop-openrc-20260510T170106Z.tar.xz"
 
 host_name="Gentoo"
 
-#ram_gb=4
+# TODO leave this empty
 swap_gb=4
 
 core_count=8
@@ -116,4 +117,8 @@ mkdir --parents /mnt/gentoo/efi
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage
 
 cd /mnt/gentoo
+
 wget "$stage_file_link"
+tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gento
+
+
