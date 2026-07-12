@@ -10,6 +10,6 @@ This script was made based on the official Gentoo Linux AMD64 handbook, this was
 
 > [!NOTE]
 > This script assumes that the disk is empty and the time is set correctly
-- How to syncronise the time in the live ISO: https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage#Downloading_the_stage_file
+> - How to syncronise the time in the live ISO: https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage#Downloading_the_stage_file
 
 Clone this repo in a live environment(preferably, in one of the gentoo live images), configure your own setting in the install.sh variables, then run install.sh. After so, you will be prompted for a root password, then just wait for the instalation to end, then reboot.

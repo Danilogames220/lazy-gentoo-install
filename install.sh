@@ -1,24 +1,50 @@
 #!/bin/bash
 # ----- SETTINGS ----- #
-user_name="assuero" # initial user, will have root permisions
+# initial user, will have root permisions
+user_name="assuero" 
 user_password="" # if empty, this will be the same as root password
 
-host_name="Gentoo"
-# the disk where gentoo will be instaled
-disk="vda" # run lsblk to check for your disk
+# the disk where gentoo will be installed
+disk="vda" # run lsblk in the live install to check for your disk
 
-ram_gb=8
-ssd_size_gb=32
+# Link of the stage file that will be used in the installation
+# you can find it here: https://www.gentoo.org/downloads/mirrors/
+stage_file_link=""
+
+host_name="Gentoo"
+
+#ram_gb=4
+swap_gb=4
+
 core_count=8
 
-# ----- READING ROOT PASSWORD ----- #
+# remove this line after every variable is set up to your installation
+config_done=0
+
+# ----- INSTALL SETUP ----- #
+# $config_done check
+if [[ -n $config_done ]]; then
+	echo 'ERROR: Installation configuration variables not fully reviewed. Edit the variables under SETTINGS acording to your machine and remove the config_done variable to proceed.'
+	# TODO uncomment this 
+	#exit 1
+fi
+
+
+# password check
 read -p "Root password: " root_password
 if [[ -z $root_password || $root_password = "" ]]; then
-	echo "ERROR: Root password is empty"
+	echo "ERROR: Root password is empty."
 	exit 1
 fi
 echo "$root_password" > "PASSWORDS.txt"
 echo "$user_password" >> "PASSWORDS.txt"
+
+
+function multi_pipe() {
+	while read -r a; do
+		printf "%s" "$a" | $1
+	done 
+}
 
 # ----- NETWORK ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Networking
@@ -30,20 +56,7 @@ echo "$user_password" >> "PASSWORDS.txt"
 # "$disk"2: swap (half of $ram_gb)
 # "$disk"1: / (ext4)
 
-function multi_pipe() {
-	while read -r a; do
-		printf "%s" "$a" | $1
-	done 
-}
-
-#cat <<END | multi_pipe "sudo fdsisk /dev/$disk_name"
-#n 
-#1
-#t
-#1
-#1
-#END
-
+# set disk system to gpt
 printf "g
 w
 " | sudo fdisk "/dev/$disk"
@@ -68,9 +81,9 @@ w
 printf "n
 2
 
-+4G
++%sG
 w
-" | sudo fdisk "/dev/$disk"
+" "$swap_gb"| sudo fdisk "/dev/$disk"
 # format partition
 printf "t
 2
@@ -100,3 +113,7 @@ sudo mount "/dev/$disk"3 /mnt/gentoo
 mkdir --parents /mnt/gentoo/efi
 
 # ----- STAGE FILE ----- #
+# https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage
+
+cd /mnt/gentoo
+wget "$stage_file_link"
