@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 # ----- SETTINGS ----- #
 # initial user, will have root permisions
 user_name="assuero" 
@@ -11,7 +10,7 @@ disk="vda" # run lsblk in the live install to check for your disk
 # Link of the stage file that will be used in the installation
 # you can find it here: https://www.gentoo.org/downloads/mirrors/
 # TODO leave this empty
-stage_file_link="https://gentoo.c3sl.ufpr.br/releases/amd64/autobuilds/20260510T170106Z/stage3-amd64-desktop-openrc-20260510T170106Z.tar.xz"
+stage_file_link="https://distfiles.gentoo.org/releases/arm64/autobuilds/20260705T233102Z/stage3-arm64-desktop-openrc-20260705T233102Z.tar.xz"
 
 host_name="Gentoo"
 
@@ -123,6 +122,8 @@ mkdir --parents /mnt/gentoo
 sudo mount "/dev/$disk"3 /mnt/gentoo
 mkdir --parents /mnt/gentoo/efi
 
+# exit if anything after here dosen't return 0
+set -e
 # ----- STAGE FILE ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage
 
