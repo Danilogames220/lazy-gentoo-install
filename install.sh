@@ -141,8 +141,19 @@ cp -fr "$SCRIPT_DIR"/locale.gen /mnt/gentoo/etc/
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Base
 
 cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
-# chrooting into the system
-sudo arch-chroot /mnt/gentoo
+
+# preparing for chroot
+sudo mount --types proc /proc /mnt/gentoo/proc
+sudo mount --rbind /sys /mnt/gentoo/sys
+sudo mount --make-rslave /mnt/gentoo/sys
+sudo mount --rbind /dev /mnt/gentoo/dev
+sudo mount --make-rslave /mnt/gentoo/dev
+sudo mount --bind /run /mnt/gentoo/run
+sudo mount --make-slave /mnt/gentoo/run 
+
+# chroot
+sudo chroot /mnt/gentoo /bin/bash
+source /etc/profile 
 export PS1="(chroot) ${PS1}"
 
 mount /dev/sda1 /efi
@@ -155,3 +166,5 @@ locale-gen
 eselect locale set $(eselect locale list | grep -m1 "$default_locale" | grep -oP '\[\K\d+(?=\])')
 
 env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
+
+# ----- KERNEL CONFIG ----- #
