@@ -23,6 +23,9 @@ core_count=8
 default_locale="pt_BR.UTF-8"
 #default_locale="en_US.UTF-8"
 
+# set this to false if you want to compile the pached kernel install of downloading the binary
+bin_dkernel=true
+
 # remove this line after every variable is set up to your installation
 config_done=0
 
@@ -142,7 +145,7 @@ cp -fr "$SCRIPT_DIR"/locale.gen /mnt/gentoo/etc/
 
 cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
 
-# preparing for chroot
+# prepare for chroot
 sudo mount --types proc /proc /mnt/gentoo/proc
 sudo mount --rbind /sys /mnt/gentoo/sys
 sudo mount --make-rslave /mnt/gentoo/sys
@@ -150,7 +153,6 @@ sudo mount --rbind /dev /mnt/gentoo/dev
 sudo mount --make-rslave /mnt/gentoo/dev
 sudo mount --bind /run /mnt/gentoo/run
 sudo mount --make-slave /mnt/gentoo/run 
-
 # chroot
 sudo chroot /mnt/gentoo /bin/bash
 source /etc/profile 
@@ -168,3 +170,24 @@ eselect locale set $(eselect locale list | grep -m1 "$default_locale" | grep -oP
 env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
 
 # ----- KERNEL CONFIG ----- #
+# https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
+
+emerge sys-kernel/linux-firmware sys-firmware/sof-firmware
+
+echo "sys-kernel/installkernel grub dracut" > /etc/portage/package.use/installkernel
+emerge sys-kernel/installkernel
+# distro kernel patches
+if [[ $bin_dkernel = true ]]; then
+	emerge sys-kernel/gentoo-kernel-bin
+else
+	emerge sys-kernel/gentoo-kernel
+fi
+emerge --depclean
+
+# only needed sometimes, so this is here just in case
+emerge @module-rebuild
+
+# ----- SYSTEM CONFIGURATION ----- #
+# https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System
+
+
