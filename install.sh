@@ -153,37 +153,35 @@ sudo mount --rbind /dev /mnt/gentoo/dev
 sudo mount --make-rslave /mnt/gentoo/dev
 sudo mount --bind /run /mnt/gentoo/run
 sudo mount --make-slave /mnt/gentoo/run 
-# chroot
-sudo chroot /mnt/gentoo /bin/bash
-source /etc/profile 
-export PS1="(chroot) ${PS1}"
 
-mount /dev/sda1 /efi <<"END-CHROOT"
+# chroot
+printf 'source /etc/profile 
+export PS1="(chroot) ${PS1}"
+mount /dev/sda1 /efi
 emerge-webrsync
 emerge --sync
 locale-gen
-eselect locale set $(eselect locale list | grep -m1 "$default_locale" | grep -oP '\[\K\d+(?=\])')
+eselect locale set $(eselect locale list | grep -m1 "%s" | grep -oP "\[\K\d+(?=\])")
 env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
-END-CHROOT
+' "$default_locale" | sudo chroot /mnt/gentoo /bin/bash
+
 # ----- KERNEL CONFIG ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
+# distro kernel patches
+binp=""
+if [[ $bin_dkernel = true ]]; then
+	binp="emerge sys-kernel/gentoo-kernel-bin"
+else
+	binp="emerge sys-kernel/gentoo-kernel"
+fi
 
-mount /dev/sda1 /efi <<"END-CHROOT"
-emerge sys-kernel/linux-firmware sys-firmware/sof-firmware
-
+printf 'emerge sys-kernel/linux-firmware sys-firmware/sof-firmware
 echo "sys-kernel/installkernel grub dracut" > /etc/portage/package.use/installkernel
 emerge sys-kernel/installkernel
-# distro kernel patches
-if [[ $bin_dkernel = true ]]; then
-	emerge sys-kernel/gentoo-kernel-bin
-else
-	emerge sys-kernel/gentoo-kernel
-fi
+%s
 emerge --depclean
-
-# only needed sometimes, so this is here just in case
 emerge @module-rebuild
-END-CHROOT
+' "$binp"| mount /dev/sda1 /efi
 # ----- SYSTEM CONFIGURATION ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System
 
