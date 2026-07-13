@@ -157,13 +157,13 @@ sudo mount --make-slave /mnt/gentoo/run
 # chroot
 printf 'source /etc/profile 
 export PS1="(chroot) ${PS1}"
-mount /dev/sda1 /efi
+mount /dev/%s1 /efi
 emerge-webrsync
 emerge --sync
 locale-gen
 eselect locale set $(eselect locale list | grep -m1 "%s" | grep -oP "\[\K\d+(?=\])")
 env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
-' "$default_locale" | sudo chroot /mnt/gentoo /bin/bash
+' "$disk" "$default_locale" | sudo chroot /mnt/gentoo /bin/bash
 
 # ----- KERNEL CONFIG ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
@@ -181,7 +181,7 @@ emerge sys-kernel/installkernel
 %s
 emerge --depclean
 emerge @module-rebuild
-' "$binp"| mount /dev/sda1 /efi
+' "$binp"| sudo chroot /mnt/gentoo /bin/bash
 # ----- SYSTEM CONFIGURATION ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System
 
