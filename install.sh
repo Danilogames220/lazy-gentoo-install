@@ -10,7 +10,7 @@ disk="vda" # run lsblk in the live install to check for your disk
 # Link of the stage file that will be used in the installation
 # you can find it here: https://www.gentoo.org/downloads/mirrors/
 # TODO leave this empty
-stage_file_link="https://distfiles.gentoo.org/releases/arm64/autobuilds/20260705T233102Z/stage3-arm64-desktop-openrc-20260705T233102Z.tar.xz"
+stage_file_link="https://distfiles.gentoo.org/releases/amd64/autobuilds/20260712T170110Z/stage3-amd64-desktop-openrc-20260712T170110Z.tar.xz"
 
 host_name="Gentoo"
 
