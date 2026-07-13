@@ -187,13 +187,13 @@ emerge @module-rebuild
 
 # fstab file
 fstab_file=$(printf "$(cat "$SCRIPT_DIR/fstab")" "$disk" "$disk" "$disk") 
-printf 'echo "%s > /etc/fstab"
+printf 'echo "%s" > /etc/fstab
 ' "$fstab_file"| sudo chroot /mnt/gentoo /bin/bash
 
 # host name
 hosts_file=$(printf "$(cat "$SCRIPT_DIR/hosts")" "$host_name" "$host_name" "$host_name" "$host_name") 
-printf 'echo "%s > /etc/hostname"
-echo "%s > /etc/hosts"
+printf 'echo "%s" > /etc/hostname
+echo "%s" > /etc/hosts
 ' "$host_name" "$hosts_file"| sudo chroot /mnt/gentoo /bin/bash
 
 # network
@@ -203,7 +203,7 @@ rc-update add NetworkManager default
 
 ### SYSTEM INFO
 # root password
-printf 'printf "%s\n%s" | passwd"
+printf 'printf "%s\n%s" | passwd
 ' "$root_password" "$root_password" | sudo chroot /mnt/gentoo /bin/bash
 
 # init and boot configuration
