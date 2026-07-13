@@ -158,20 +158,17 @@ sudo chroot /mnt/gentoo /bin/bash
 source /etc/profile 
 export PS1="(chroot) ${PS1}"
 
-mount /dev/sda1 /efi
-
+mount /dev/sda1 /efi <<"END-CHROOT"
 emerge-webrsync
 emerge --sync
-
-# locale
 locale-gen
 eselect locale set $(eselect locale list | grep -m1 "$default_locale" | grep -oP '\[\K\d+(?=\])')
-
 env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
-
+END-CHROOT
 # ----- KERNEL CONFIG ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
 
+mount /dev/sda1 /efi <<"END-CHROOT"
 emerge sys-kernel/linux-firmware sys-firmware/sof-firmware
 
 echo "sys-kernel/installkernel grub dracut" > /etc/portage/package.use/installkernel
@@ -186,8 +183,7 @@ emerge --depclean
 
 # only needed sometimes, so this is here just in case
 emerge @module-rebuild
-
+END-CHROOT
 # ----- SYSTEM CONFIGURATION ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System
-
 
