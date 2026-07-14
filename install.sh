@@ -191,7 +191,7 @@ printf 'echo "%s" > /etc/fstab
 ' "$fstab_file"| sudo chroot /mnt/gentoo /bin/bash
 
 # host name
-hosts_file=$(printf "$(cat "$SCRIPT_DIR/hosts")" "$host_name" "$host_name" "$host_name" "$host_name") 
+hosts_file=$(printf "$(cat $SCRIPT_DIR/hosts)" "$host_name" "$host_name" "$host_name" "$host_name") 
 printf 'echo "%s" > /etc/hostname
 echo "%s" > /etc/hosts
 ' "$host_name" "$hosts_file"| sudo chroot /mnt/gentoo /bin/bash
