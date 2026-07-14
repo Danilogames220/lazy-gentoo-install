@@ -213,4 +213,56 @@ printf 'printf "%s\n%s" | passwd
 # ----- INSTALLIING TOOLS ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Tools
 
+# system logger
+printf 'emerge app-admin/sysklogd
+rc-update add sysklogd default
+' | sudo chroot /mnt/gentoo /bin/bash
 
+# cron daemon
+printf 'emerge sys-process/cronie
+rc-update add cronie default
+' | sudo chroot /mnt/gentoo /bin/bash
+
+# ----- BOOTLOADER CONFIGURATION ----- #
+# https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Bootloader
+
+printf 'emerge --verbose sys-boot/grub
+grub-install --efi-directory=/efi
+grub-mkconfig -o /boot/grub/grub.cfg
+' | sudo chroot /mnt/gentoo /bin/bash
+
+# ----- FINALIZING ----- #
+# https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Finalizing
+
+printf 'emerge app-portage/gentoolkit
+' | sudo chroot /mnt/gentoo /bin/bash
+
+# adding the default user
+printf 'useradd -m -G audio,cdrom,cron,floppy,usb,video,wheel -s /bin/bash "%s"
+printf "%s\n%s\n" | passwd %s
+' "$user_name" "$user_password" "$user_password" "$user_name" | sudo chroot /mnt/gentoo /bin/bash
+
+# configuring sudo (optional)
+printf 'emerge app-admin/sudo
+' | sudo chroot /mnt/gentoo /bin/bash
+
+printf 'echo "%s" > /etc/sudoers
+' "$(cat "$SCRIPT_DIR/sudoers")"| sudo chroot /mnt/gentoo /bin/bash
+
+# remove the tar file
+printf 'rm /stage3-*.tar.*'| sudo chroot /mnt/gentoo /bin/bash
+
+# umonting everything
+printf '/efi'| sudo chroot /mnt/gentoo /bin/bash
+# NOTE: if using arch-chroot, remove this
+umount /mnt/gentoo/proc
+umount /mnt/gentoo/sys
+umount /mnt/gentoo/sys
+umount /mnt/gentoo/dev
+umount /mnt/gentoo/dev
+umount /mnt/gentoo/run
+umount /mnt/gentoo/run 
+
+umount /mnt/gentoo
+
+echo "SUCESS: Installation complete(at $date)! Reboot your system, remove the live image and enjoy your Gentoo :D"
