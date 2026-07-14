@@ -253,7 +253,7 @@ printf 'echo "%s" > /etc/sudoers
 printf 'rm /stage3-*.tar.*'| sudo chroot /mnt/gentoo /bin/bash
 
 # umonting everything
-printf '/efi'| sudo chroot /mnt/gentoo /bin/bash
+printf 'umount /efi'| sudo chroot /mnt/gentoo /bin/bash
 # NOTE: if using arch-chroot, remove this
 umount /mnt/gentoo/proc
 umount /mnt/gentoo/sys
