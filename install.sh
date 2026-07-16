@@ -1,20 +1,20 @@
 #!/bin/bash
 # ----- SETTINGS ----- #
 # initial user, will have root permisions
-user_name="assuero" 
+user_name="" 
 user_password="" # if empty, this will be the same as root password
 
 # the disk where gentoo will be installed
-disk="vda" # run lsblk in the live install to check for your disk
+# run lsblk in the live install to check for your disk
+disk="" 
 
 # Link of the stage file that will be used in the installation
 # you can find it here: https://www.gentoo.org/downloads/mirrors/
-stage_file_link=""
 
 host_name="Gentoo"
 
 # how much ram do you want for the swap partition
-swap_gb=
+swap_gb=4
 
 # the locale that you want to use in the system
 default_locale="en_US.UTF-8"
@@ -41,6 +41,13 @@ if [[ -z $root_password || $root_password = "" ]]; then
 	echo "ERROR: Root password is empty."
 	exit 1
 fi
+# checking for the stage3 file
+ls stage3-*.tar.xz
+if [[ "$?" != 0 ]]; then
+	echo "ERROR: No stage3 tar.xz file found"
+	exit 1
+fi
+
 if [[ "$user_password" = "" ]]; then
 	user_password="$root_password"
 fi
@@ -133,11 +140,12 @@ set -e
 # ----- STAGE FILE ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage
 
-log_echo "Downloading stage3 file"
 cd /mnt/gentoo
 
-wget "$stage_file_link"
-log_echo "SUCCESS: Stage3 downloading complete, extracting the stage tar"
+log_echo "Copying stage3 file"
+cp stage3-*.tar.xz /etc/gentoo/
+#wget "$stage_file_link"
+log_echo "SUCCESS: Stage3 copied, extracting the stage tar"
 tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gentoo
 log_echo "SUCCESS: Stage3 extraction complete"
 
