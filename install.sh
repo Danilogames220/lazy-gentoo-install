@@ -53,11 +53,7 @@ fi
 ### common variables / functions
 # dir where the script is running
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-function multi_pipe() {
-	while read -r a; do
-		printf "%s" "$a" | $1
-	done 
-}
+
 
 # ----- NETWORK ----- #
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Networking
@@ -199,6 +195,9 @@ echo "%s" > /etc/hosts
 # network
 printf 'emerge net-misc/networkmanager
 rc-update add NetworkManager default
+' | sudo chroot /mnt/gentoo /bin/bash
+# to prevent networkmanager changing the host name
+printf 'printf "[main]\n# Stop NetworkManager from changing the hostname\nhostname-mode=none" > /etc/NetworkManager/NetworkManager.conf
 ' | sudo chroot /mnt/gentoo /bin/bash
 
 ### SYSTEM INFO
