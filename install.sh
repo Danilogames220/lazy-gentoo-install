@@ -143,7 +143,7 @@ set -e
 cd /mnt/gentoo
 
 log_echo "Copying stage3 file"
-cp stage3-*.tar.xz /etc/gentoo/
+cp "$SCRIPT_DIR"/stage3-*.tar.xz /etc/gentoo/
 #wget "$stage_file_link"
 log_echo "SUCCESS: Stage3 copied, extracting the stage tar"
 tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gentoo
