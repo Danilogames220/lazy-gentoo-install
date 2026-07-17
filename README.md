@@ -1,3 +1,7 @@
+> [!WARNING]
+> The script works but isn't done yet. If you find any massive issue in the code, please create a pull request
+> [!NOTE]
+> This branch is for testing the script and fixing bugs in the script
 # Lazy Gentoo Install
 Automatic script for a minimal installation of Gentoo Linux
 
