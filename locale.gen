@@ -6,7 +6,6 @@
 
 # if you want to use difrent locales than these, delete these lines and uncomment the locales you want to use
 en_US.UTF-8 UTF-8  # American English (United States)
-pt_BR.UTF-8 UTF-8  # Brazilian Portuguese (Brazil)
 
 # aa_DJ            # Afar (Djibouti)
 # aa_ER            # Afar (Eritrea)

@@ -9,8 +9,8 @@ user_password="" # if empty, this will be the same as root password
 disk="" 
 
 # Link of the stage file that will be used in the installation
-# you can find it here: https://www.gentoo.org/downloads/mirrors/
-
+# you can find it here: https://www.gentoo.org/downloads/amd64/
+# or in here: https://www.gentoo.org/downloads/mirrors/
 host_name="Gentoo"
 
 # how much ram do you want for the swap partition
@@ -59,7 +59,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 log_file="lazy-log.txt"
 function log_echo () {
 	echo "Lazy Gentoo Install - ($(date '+%d/%m/%Y; %H:%M:%S')) $1"
-	echo "($(date '+%d/%m/%Y; %H:%M:%S')) $1" >> "$log_file"
+	echo "($(date '+%d/%m/%Y; %H:%M:%S')) $1" >> "$SCRIPT_DIR/$log_file"
 }
 
 # ----- NETWORK ----- #
@@ -319,7 +319,8 @@ printf 'umount /efi'| sudo chroot /mnt/gentoo /bin/bash
 log_echo "SUCCESS: Installation complete! Enjoy your new Gentoo system ;)"
 if [[ $copy_log_to_home_dir = true ]]; then
 	log_echo "Copying log file to '/etc/$user_name'"
-	printf 'printf %s > %s' "$(cat $SCRIPT_DIR/$log_file)" "$log_file" | sudo chroot /mnt/gentoo /bin/bash
+	l_file_path="$SCRIPT_DIR/$log_file"
+	printf 'printf %s > %s' "$(cat $l_file_path)" "/$log_file" | sudo chroot /mnt/gentoo /bin/bash
 fi
 
 log_echo "Unmounting /mnt/gentoo"
